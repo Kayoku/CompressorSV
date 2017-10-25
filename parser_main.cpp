@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-int main (int argc, char *argv[])
+int main ()
 {
  /*
   * Ignorer 1 lignes
@@ -11,27 +11,22 @@ int main (int argc, char *argv[])
   */
 
  std::string line;
+ std::ofstream file("sequence-base.acgt");
 
- for (int i = 0 ; i < 10000 ; i++)
-  for (int j = 0 ; j < 4 ; j++)
-   std::getline(std::cin, line);
+ if (!file.good())
+ {
+  std::cerr << "Fichier non créé." << std::endl;
+  return -1;
+ }
 
- for (int i = 0 ; i < 100 ; i++)
+ while (std::getline(std::cin, line))
  {
   std::getline(std::cin, line);
-  std::getline(std::cin, line);
  
-  std::ofstream file("../../sequences/seq"+std::to_string(i)+".txt");
-  if (file.good())
-  {
-   file << line;
+  file << line << '\n';
 
-   std::cout << "New file !\n";
-   std::getline(std::cin, line);
-   std::getline(std::cin, line);
-  }
-  else
-   std::cout << "No new file !\n"; 
+  std::getline(std::cin, line);
+  std::getline(std::cin, line);
  }
 
  return 0;

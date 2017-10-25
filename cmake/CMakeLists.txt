@@ -18,3 +18,9 @@ include_directories(
 add_executable(parse_file
     ../parser_main.cpp
 )
+
+
+add_executable(compressor
+    ../compressor_main.cpp
+    ../Basic_Compressor.cpp
+)
