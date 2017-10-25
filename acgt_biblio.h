@@ -10,7 +10,7 @@ G : 0x2
 T : 0x3
 */
 
-std::string read_byte_acgt(uint8_t byte);
+std::string read_byte_acgt(uint8_t byte, short nb_carac = 4);
 uint8_t add_nucleotide(uint8_t byte, char c);
 
 #endif

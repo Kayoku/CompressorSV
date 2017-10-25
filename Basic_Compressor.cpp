@@ -14,7 +14,9 @@ void Basic_Compressor::compress()
   cpt = 0;
   buffer = 0x00;
 
-  out << (uint16_t)line.size();
+  uint16_t size = line.size();
+  
+  out << (uint8_t)(size & 0x00FF) << (uint8_t)(size >> 8);
 
   for (char c : line)
   {
@@ -40,27 +42,31 @@ void Basic_Compressor::uncompress()
 {
  std::string line;
  char buffer;
+ char size_buffer[2];
  uint16_t size = 0;
+ int rest = 0;
 
- while (std::cin >> size)
+ while (std::cin.read(&size_buffer[0],sizeof(size_buffer)))
  {
+  // Conversion size_buffer -> size uint16
+  size = (size_buffer[1] << 8) + size_buffer[0];
+
   // Calcul nb de byte à lire
   int nb_buffer_char = ((int)size)/4;
-  if (((int)size)%4 > 0)
+  rest = (int)size%4;
+  if (rest > 0)
    nb_buffer_char++;
 
-  // On lit chaque octet, pour le dernier, on enlève les nucléotides
-  // qui n'existe pas
+  // On lit chaque octet
   std::string new_byte = "";
   for (int i = 0 ; i < nb_buffer_char ; i++)
   {
-   std::cin >> buffer;
-   new_byte += read_byte_acgt((uint8_t)buffer); 
+   std::cin.get(buffer);
+   if (i == nb_buffer_char-1 && rest > 0)
+    new_byte += read_byte_acgt(buffer, rest);
+   else
+    new_byte += read_byte_acgt(buffer); 
   }
-
-  if (((int)size)%4 > 0)
-   for (int i = 0 ; i < ((int)size)%4 ; i++)
-    new_byte.pop_back();
 
   out << new_byte;
   out << '\n';

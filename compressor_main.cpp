@@ -35,7 +35,7 @@ int main (int argc, char *argv[])
 
  // Création du fichier de sortie
  std::string algo = argv[2]; 
- std::ofstream compress_file(std::string((compress) ? "" : "un")+"compress_file."+algo);
+ std::ofstream compress_file(std::string((compress) ? "" : "un")+"compress_file."+algo, std::ofstream::binary);
  if (!compress_file.good())
  {
   std::cerr << "Can't create file." << std::endl;

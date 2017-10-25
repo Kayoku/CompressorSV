@@ -5,12 +5,13 @@
 std::string read_byte_acgt
 ////////////////////////////////////////////////////////////////////////////
 (
- uint8_t byte
+ uint8_t byte,
+ short nb_carac
 )
 {
  std::string s;
 
- for (int i = 0 ; i < 4 ; i++)
+ for (int i = 4 - nb_carac ; i < 4 ; i++)
  {
   uint8_t buffer = (byte >> 2*(3-i)) & 0x03;
   if ((int)buffer == 0)
