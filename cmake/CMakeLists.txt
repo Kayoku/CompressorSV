@@ -23,5 +23,6 @@ add_executable(parse_file
 add_executable(compressor
     ../compressor_main.cpp
     ../Basic_Compressor.cpp
+    ../LZ77_Compressor.cpp
     ../acgt_biblio.cpp
 )

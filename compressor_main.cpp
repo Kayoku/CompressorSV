@@ -4,6 +4,7 @@
 
 #include "Compressor.h"
 #include "Basic_Compressor.h"
+#include "LZ77_Compressor.h"
 
 /*
 A : 00
@@ -17,7 +18,7 @@ int main (int argc, char *argv[])
  // Erreur si pas le bon nombre d'arguments
  if (argc != 3)
  {
-  std::cerr << "./compressor <compress/uncompress> <basic>" << std::endl;
+  std::cerr << "./compressor <compress/uncompress> <basic/lz77-1/lz77-2>" << std::endl;
   return -1;
  }
 
@@ -46,6 +47,10 @@ int main (int argc, char *argv[])
  Compressor* compressor;
  if (algo == "basic")
   compressor = new Basic_Compressor(std::cin, compress_file); 
+ else if (algo == "lz77-1")
+  compressor = new LZ77_Compressor(1, 3, 3, std::cin, compress_file);
+ else if (algo == "lz77-2")
+  compressor = new LZ77_Compressor(2, 8, 6, std::cin, compress_file);
  else
  {
   std::cerr << "Algo doesn't exist." << std::endl;

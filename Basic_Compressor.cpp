@@ -9,7 +9,7 @@ void Basic_Compressor::compress()
  uint8_t buffer;
  short cpt;
 
- while (std::getline(std::cin, line))
+ while (std::getline(in, line))
  {
   cpt = 0;
   buffer = 0x00;
@@ -46,10 +46,10 @@ void Basic_Compressor::uncompress()
  uint16_t size = 0;
  int rest = 0;
 
- while (std::cin.read(&size_buffer[0],sizeof(size_buffer)))
+ while (in.read(&size_buffer[0],sizeof(size_buffer)))
  {
   // Conversion size_buffer -> size uint16
-  size = (size_buffer[1] << 8) + size_buffer[0];
+  size = (size_buffer[1] << 8) + (uint8_t)size_buffer[0];
 
   // Calcul nb de byte à lire
   int nb_buffer_char = ((int)size)/4;
@@ -61,7 +61,7 @@ void Basic_Compressor::uncompress()
   std::string new_byte = "";
   for (int i = 0 ; i < nb_buffer_char ; i++)
   {
-   std::cin.get(buffer);
+   in.read(&buffer, sizeof(buffer));
    if (i == nb_buffer_char-1 && rest > 0)
     new_byte += read_byte_acgt(buffer, rest);
    else
