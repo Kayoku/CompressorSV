@@ -1,5 +1,6 @@
 #include "Basic_Compressor.h"
 #include "acgt_biblio.h"
+#include <array>
 
 ////////////////////////////////////////////////////////////////////////////
 void Basic_Compressor::compress()
@@ -15,7 +16,7 @@ void Basic_Compressor::compress()
   buffer = 0x00;
 
   uint16_t size = line.size();
-  
+
   out << (uint8_t)(size & 0x00FF) << (uint8_t)(size >> 8);
 
   for (char c : line)

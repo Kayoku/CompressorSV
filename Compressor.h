@@ -2,15 +2,16 @@
 #define COMPRESSOR_DEFINE
 
 #include <iostream>
+#include <fstream>
 
 class Compressor
 {
  protected:
-  std::istream &in;
-  std::ostream &out;
+  std::ifstream &in;
+  std::ofstream &out;
 
  public:
-  Compressor(std::istream& in, std::ostream& out):
+  Compressor(std::ifstream& in, std::ofstream& out):
    in(in),
    out(out)
   {}

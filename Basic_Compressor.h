@@ -8,7 +8,7 @@ class Basic_Compressor: public Compressor
  private:
 
  public:
-  Basic_Compressor(std::istream &in, std::ostream &out):
+  Basic_Compressor(std::ifstream &in, std::ofstream &out):
    Compressor(in, out)
    {}
 

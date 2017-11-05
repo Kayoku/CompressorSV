@@ -17,8 +17,8 @@ class LZ77_Compressor : public Compressor
   LZ77_Compressor(int nb_bytes,
                   int nb_bit_search_buffer,
                   int nb_bit_look_ahead_buffer,
-                  std::istream &in,
-                  std::ostream &out):
+                  std::ifstream &in,
+                  std::ofstream &out):
    Compressor(in,out),
    nb_bit_search_buffer(nb_bit_search_buffer),
    nb_bit_look_ahead_buffer(nb_bit_look_ahead_buffer),

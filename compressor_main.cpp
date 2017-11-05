@@ -5,6 +5,7 @@
 #include "Compressor.h"
 #include "Basic_Compressor.h"
 #include "LZ77_Compressor.h"
+#include "Huffman_Compressor.h"
 
 /*
 A : 00
@@ -16,9 +17,9 @@ T : 11
 int main (int argc, char *argv[])
 {
  // Erreur si pas le bon nombre d'arguments
- if (argc != 3)
+ if (argc != 4)
  {
-  std::cerr << "./compressor <compress/uncompress> <basic/lz77-1/lz77-2>" << std::endl;
+  std::cerr << "./compressor <compress/uncompress> <basic/lz77-1/lz77-2/huffman> <nom_fichier>" << std::endl;
   return -1;
  }
 
@@ -34,6 +35,15 @@ int main (int argc, char *argv[])
   return -1;
  }
 
+ // Création du fichier d'entrée
+ std::string input_string = argv[3];
+ std::ifstream input_file(input_string, std::ifstream::binary); 
+ if (!input_file.good())
+ {
+  std::cerr << "File doesn't exist." << std::endl;
+  return -1;
+ }
+
  // Création du fichier de sortie
  std::string algo = argv[2]; 
  std::ofstream compress_file(std::string((compress) ? "" : "un")+"compress_file."+algo, std::ofstream::binary);
@@ -46,11 +56,13 @@ int main (int argc, char *argv[])
  // Choix de l'algo
  Compressor* compressor;
  if (algo == "basic")
-  compressor = new Basic_Compressor(std::cin, compress_file); 
+  compressor = new Basic_Compressor(input_file, compress_file); 
  else if (algo == "lz77-1")
-  compressor = new LZ77_Compressor(1, 3, 3, std::cin, compress_file);
+  compressor = new LZ77_Compressor(1, 3, 3, input_file, compress_file);
  else if (algo == "lz77-2")
-  compressor = new LZ77_Compressor(2, 8, 6, std::cin, compress_file);
+  compressor = new LZ77_Compressor(2, 9, 5, input_file, compress_file);
+ else if (algo == "huffman")
+  compressor = new Huffman_Compressor(input_file, compress_file);
  else
  {
   std::cerr << "Algo doesn't exist." << std::endl;

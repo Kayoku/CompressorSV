@@ -90,8 +90,6 @@ void LZ77_Compressor::compress()
     to_write |= u_length;
     to_write <<= 2;
     to_write |= u_letter;
-    //std::cout << std::bitset<16>(to_write) << std::endl;
-    //std::cout << "(" << u_distance << "," << u_length << ")" << nucleotide_to_char(u_letter) << '\n';
     out << (uint8_t)(to_write & 0x00FF) << (uint8_t)(to_write >> 8);
    }
  
@@ -135,7 +133,6 @@ void LZ77_Compressor::uncompress()
 
   // Conversion size_buffer -> size uint16
   size = (size_buffer[1] << 8) + (uint8_t)size_buffer[0];
-  //std::cout << size << std::endl;
 
   while (line.size() < size)
   {
