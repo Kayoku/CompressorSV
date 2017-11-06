@@ -16,37 +16,37 @@ class Node
   virtual ~Node() {}
 };
 
-class LeafNode : public Node
+class Leaf_Node : public Node
 {
  public:
   const uint8_t character;
 
-  LeafNode(unsigned long value, uint8_t character): 
+  Leaf_Node(unsigned long value, uint8_t character): 
    Node(value, 0),
    character(character)
   {}
 };
 
-class ParentNode : public Node
+class Parent_Node : public Node
 {
  public:
   Node const* left;
   Node const* right;
 
-  ParentNode(Node* n1, Node* n2):
+  Parent_Node(Node* n1, Node* n2):
    Node(n1->value + n2->value, (n1->depth > n2->depth)? n1->depth+1 : n2->depth+1), 
    left(n1),
    right(n2)
   {}
 
-  ~ParentNode()
+  ~Parent_Node()
   {
    delete left;
    delete right;
   }
 };
 
-struct NodeCompare
+struct Node_Compare
 {
  bool operator()(const Node* first, const Node* second) const
   { return first->value > second->value; }

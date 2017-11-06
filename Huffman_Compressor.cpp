@@ -5,25 +5,27 @@
 #include <queue>
 #include <iterator>
 
- 
-typedef std::vector<bool> HuffCode;
-typedef std::map<int, HuffCode> HuffCodeMap;
-void GenerateCodes(const Node* node, const HuffCode& prefix, HuffCodeMap& outCodes)
+////////////////////////////////////////////////////////////////////////////
+void generate_bools 
+////////////////////////////////////////////////////////////////////////////
+(
+ const Node* node,
+ const std::vector<bool>& prefix,
+ std::map<int, std::vector<bool>>& out_codes
+)
 {
-    if (const LeafNode* lf = dynamic_cast<const LeafNode*>(node))
-    {
-        outCodes[lf->character] = prefix;
-    }
-    else if (const ParentNode* in = dynamic_cast<const ParentNode*>(node))
-    {
-        HuffCode leftPrefix = prefix;
-        leftPrefix.push_back(false);
-        GenerateCodes(in->left, leftPrefix, outCodes);
- 
-        HuffCode rightPrefix = prefix;
-        rightPrefix.push_back(true);
-        GenerateCodes(in->right, rightPrefix, outCodes);
-    }
+ if (const Leaf_Node* lf = dynamic_cast<const Leaf_Node*>(node))
+  out_codes[lf->character] = prefix;
+ else if (const Parent_Node* in = dynamic_cast<const Parent_Node*>(node))
+ {
+  std::vector<bool> left_prefix = prefix;
+  left_prefix.push_back(false);
+  generate_bools(in->left, left_prefix, out_codes);
+
+  std::vector<bool> right_prefix = prefix;
+  right_prefix.push_back(true);
+  generate_bools(in->right, right_prefix, out_codes);
+ }
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -35,6 +37,7 @@ void Huffman_Compressor::compress()
  std::map<int, unsigned long> frequencies;
  std::vector<std::pair<int, unsigned long>> sorted_frequencies;
 
+ // Calcul des fréquences de chaque chaines
  for (int i = 0 ; i < 256 ; i++)
   frequencies[i] = 0;
 
@@ -58,11 +61,11 @@ void Huffman_Compressor::compress()
  in.seekg(0);
 
  // Création de l'arbre
- std::priority_queue<Node*, std::vector<Node*>, NodeCompare> queue; 
+ std::priority_queue<Node*, std::vector<Node*>, Node_Compare> queue; 
 
  for (int i = 0 ; i < (int)sorted_frequencies.size() ; i++)
   if (sorted_frequencies[i].second > 0)
-   queue.push(new LeafNode(sorted_frequencies[i].second,
+   queue.push(new Leaf_Node(sorted_frequencies[i].second,
                            sorted_frequencies[i].first));
 
  while (queue.size() > 1)
@@ -73,22 +76,16 @@ void Huffman_Compressor::compress()
   Node* child_left = queue.top();
   queue.pop();
 
-  Node* parent = new ParentNode(child_right, child_left);
+  Node* parent = new Parent_Node(child_right, child_left);
   queue.push(parent);
  }
 
- std::cout << queue.top()->depth << std::endl;
- HuffCodeMap codes;
- GenerateCodes(queue.top(), HuffCode(), codes);
+ std::map<int, std::vector<bool>> codes;
+ generate_bools(queue.top(), std::vector<bool>(), codes);
  queue.pop();
 
- for (HuffCodeMap::const_iterator it = codes.begin(); it != codes.end(); ++it)
- {
-  std::cout << it->first << " ";
-  std::copy(it->second.begin(), it->second.end(),
-            std::ostream_iterator<bool>(std::cout));
-  std::cout << std::endl;
- }
+ // Ecriture de l'arbre
+ 
 
  // utilisation de l'arbre
  std::vector<bool> inter_bool;
@@ -116,7 +113,8 @@ void Huffman_Compressor::compress()
   }
  }
 
- out << buffer_out;
+ if (cpt > 0)
+  out << buffer_out;
 }
 
 ////////////////////////////////////////////////////////////////////////////

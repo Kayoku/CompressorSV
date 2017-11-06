@@ -1,5 +1,6 @@
 # CompressorSV
 
+https://fr.wikipedia.org/wiki/LZ77_et_LZ78
 https://www.cs.helsinki.fi/u/tpkarkka/opetus/12k/dct/lecture07.pdf
 http://jens.jm-s.de/comp/LZ77-JensMueller.pdf
 https://www.youtube.com/watch?v=HpMvcglSxUk&feature=youtu.be
